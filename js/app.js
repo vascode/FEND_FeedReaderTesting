@@ -20,7 +20,11 @@ var allFeeds = [
     }, {
         name: 'Linear Digressions',
         url: 'http://feeds.feedburner.com/udacity-linear-digressions'
+    }, {
+        name: '에스티마의 인터넷이야기',
+        url: 'https://estimastory.com/feed'
     }
+
 ];
 
 /* This function starts up our application. The Google Feed
@@ -117,6 +121,7 @@ $(function() {
      * the menu, load the feed, and prevent the default action
      * (following the link) from occurring.
      */
+
     feedList.on('click', 'a', function() {
         var item = $(this);
 
