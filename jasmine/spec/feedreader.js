@@ -32,7 +32,7 @@ $(function() {
          * and that the URL is not empty.
          */
          function urlDefined(feed){
-            it(feed.id + ". has " + feed.name + "'s URL defined", function(){
+            it(feed.id + '. has ' + feed.name + '\'s URL defined', function(){
                 expect(feed.url).toBeDefined();
                 expect(feed.url.length).not.toBe(0);
             })
@@ -47,7 +47,7 @@ $(function() {
          * and that the name is not empty.
          */
          function nameDefined(feed){
-            it(feed.id + ". has " + feed.name + "'s name defined", function(){
+            it(feed.id + '. has ' + feed.name + '\'s name defined', function(){
                 expect(feed.name).toBeDefined();
                 expect(feed.name.length).not.toBe(0);
             })
@@ -60,21 +60,44 @@ $(function() {
 
 
     /* TODO: Write a new test suite named "The menu" */
-
+    describe('The menu', function(){
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+        it('is hidden by default', function(){
+           expect($('body').hasClass('menu-hidden')).toBe(true);
+        });
 
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
-          */
+        /* TODO: Write a test that ensures the menu changes
+         * visibility when the menu icon is clicked. This test
+         * should have two expectations: does the menu display when
+         * clicked and does it hide when clicked again.
+         */
+        describe('The menu visibility', function(){
+            beforeEach(function(){
+                var menuIcon = $('.menu-icon-link');
+                menuIcon.click(); 
+            });
+            it('is visible when clicked', function(){
+                // var menuIcon = $('.menu-icon-link');
+                // menuIcon.click(); 
+                expect($('body').hasClass('menu-hidden')).toBe(false);
+            });
+
+            it('is not visible when clicked again', function(){
+                // var menuIcon = $('.menu-icon-link');
+                // menuIcon.click(); 
+               expect($('body').hasClass('menu-hidden')).toBe(true);
+            });
+
+        });
+          
+    });
 
     /* TODO: Write a new test suite named "Initial Entries" */
-
+    describe('Initial Entries', function(){
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
@@ -82,10 +105,43 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
 
-    /* TODO: Write a new test suite named "New Feed Selection"
+        beforeEach(function(done){
+           loadFeed(0, done);
+        });
 
+        it('has a feed loaded', function(){
+           var numOfEntry = $('.feed .entry').length;
+           expect(numOfEntry).toBeGreaterThan(0);
+        });
+
+    });
+        
+
+    /* TODO: Write a new test suite named "New Feed Selection" */
+    describe('New Feed Selection', function(){
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+
+        var oldFirstItem;
+        var newFirstItem;
+        beforeEach(function(done){
+            loadFeed(0, function(){
+                oldFirstItem = $('.feed .entry:first > h2'); 
+
+                loadFeed(1, function(){
+                    var newFirstItem = $('.feed .entry:first > h2');
+                    done();
+                });
+           });
+        });
+
+        it('updates a feed', function(){
+            expect(oldFirstItem).not.toBe(newFirstItem);
+        });
+
+    });
+    
+        
 }());
